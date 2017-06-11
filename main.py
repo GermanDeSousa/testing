@@ -23,15 +23,16 @@ if __name__ == '__main__':
 
             os.system(evosuite_command)
 
-    for i in range(30):
-        for class_name in class_list:
-            randoop_command = 'java -ea -classpath {randoop_location}:bin/ randoop.main.Main gentests --testclass={class_name}' \
-                              ' --timelimit=60 --testsperfile=20000 --junit-output-dir=src/test/java ' \
+    for class_name in class_list:
+        for j in range(30):
+            class_name_to_output_file = class_name.split('.')[2]
+            randoop_command = 'java -ea -classpath {randoop_location}:target/ randoop.main.Main gentests --testclass={class_name}' \
+                              ' --timelimit=60 --testsperfile=20000 --junit-output-dir=src/test/java/randoop ' \
                               '--regression-test-basename="{regression_file_name}" ' \
                               '--error-test-basename="{error_file_name}"'.format(randoop_location=randoop_location,
-                                                                                 regression_file_name="RegressionTest" + class_name + str(
-                                                                                     i),
-                                                                                 error_file_name="ErrorTest" + class_name + str(
-                                                                                     i),
+                                                                                 regression_file_name="RegressionTest" + class_name_to_output_file + str(
+                                                                                     j) + 'A' ,
+                                                                                 error_file_name="ErrorTest" + class_name_to_output_file + str(
+                                                                                     j) + 'A',
                                                                                  class_name=class_name)
             os.system(randoop_command)

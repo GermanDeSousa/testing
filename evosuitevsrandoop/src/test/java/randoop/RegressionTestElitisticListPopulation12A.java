@@ -1,3 +1,5 @@
+package randoop;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import randoop.RegressionTestElitisticListPopulation12A0;
