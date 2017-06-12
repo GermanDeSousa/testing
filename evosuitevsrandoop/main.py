@@ -5,7 +5,7 @@ def build_directory(i, class_name):
     os.system("mkdir evosuite-result/{directory}".format(directory=class_name + str(i)))
 
 
-def main():
+if __name__ == '__main__':
     class_list = ["collections.comparators.FixedOrderComparator", "collections.iterators.FilterIterator",
                   "collections.map.PredicatedMap", "math.genetics.ElitisticListPopulation"]
 
