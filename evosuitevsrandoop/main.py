@@ -22,4 +22,4 @@ def main():
 
             os.system(evosuite_command)
 
-    os.system('mvn clean install blablabla')
+    os.system('mvn clean install org.pitest:pitest-maven:mutationCoverage')
