@@ -21,3 +21,5 @@ def main():
                 directory=class_name + str(i))
 
             os.system(evosuite_command)
+
+    os.system('mvn clean install blablabla')
