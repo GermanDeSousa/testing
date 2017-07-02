@@ -8,17 +8,11 @@
     <artifactId>tp2artifact</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
-        <!-- JACOCO -->
+
         <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.7.7.201606060606</version>
-        </dependency>
-        <!-- PITEST -->
-        <dependency>
-            <groupId>org.pitest</groupId>
-            <artifactId>pitest-maven</artifactId>
-            <version>1.1.10</version>
+            <groupId>org.evosuite</groupId>
+            <artifactId>evosuite-standalone-runtime</artifactId>
+            <version>${evosuiteVersion}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -26,59 +20,61 @@
             <version>4.12</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.evosuite</groupId>
-            <artifactId>evosuite-standalone-runtime</artifactId>
-            <version>${evosuiteVersion}</version>
-            <scope>test</scope>
-        </dependency>
-
-
-
     </dependencies>
 
     <properties>
         <evosuiteVersion>1.0.5</evosuiteVersion>
     </properties>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>EvoSuite</id>
-            <name>EvoSuite Repository</name>
-            <url>http://www.evosuite.org/m2</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.0</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-
-        </pluginManagement>
-
         <plugins>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.4</version>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
-                    <argLine>${surefireArgLine}</argLine>      <!-- This is required for code coverage to work. -->
+                    <argLine>-Xms1024m -Xmx1024m</argLine>
                 </configuration>
             </plugin>
 
-            <!-- Code coverage plugin, generates coverage report to target/site/jacoco/
-                 To skip coverage generation add -Djacoco.skip=true
-            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>ISO-8859-1</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <targetClasses>
+                        <param>collections.comparators.FixedOrderComparator</param>
+                        <param>collections.iterators.FilterIterator</param>
+                        <param>collections.map.PredicatedMap</param>
+                        <param>math.genetics.ElitisticListPopulation</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>${test_case}</param>
+                    </targetTests>
+                    <reportsDirectory>${directory}</reportsDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -121,25 +117,20 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.pitest</groupId>
-                <artifactId>pitest-maven</artifactId>
-                <version>1.1.10</version>
-                <configuration>
-                    <targetClasses>
-                        <param>collections.comparators.FixedOrderComparator</param>
-                        <param>collections.iterators.FilterIterator</param>
-                        <param>collections.map.PredicatedMap</param>
-                        <param>math.genetics.ElitisticListPopulation</param>
-                    </targetClasses>
-                    <targetTests>
-                        <param>randoop.*</param>
-                    </targetTests>
-                </configuration>
-
-            </plugin>
         </plugins>
     </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>http://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>EvoSuite</id>
+            <name>EvoSuite Repository</name>
+            <url>http://www.evosuite.org/m2</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
